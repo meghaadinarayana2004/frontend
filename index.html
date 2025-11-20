@@ -39,7 +39,8 @@
       message.textContent = "Analyzing video... Please wait.";
 
       try {
-        const response = await fetch("https://exp1-hsr4.onrender.com/", {  // ← REPLACE HERE
+       const response = await fetch("https://exp1-hsr4.onrender.com/analyze", {
+
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ youtube_url: link, email: email })
