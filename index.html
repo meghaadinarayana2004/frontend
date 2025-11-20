@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AI YouTube Video Analyzer</title>
+  <style>
+    body { font-family: Arial, sans-serif; background: #f7f7f7; margin: 0; padding: 40px; text-align: center; }
+    .container { max-width: 600px; background: #fff; padding: 30px; border-radius: 15px; margin: auto; box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
+    input { width: 100%; padding: 12px; margin: 12px 0; border-radius: 8px; border: 1px solid #ccc; font-size: 16px; }
+    button { background: #4a6cf7; color: white; border: none; padding: 12px 20px; border-radius: 8px; font-size: 18px; cursor: pointer; width: 100%; }
+    button:hover { background: #3452c9; }
+    .message { margin-top: 20px; font-size: 16px; color: #444; text-align: left; white-space: pre-line; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>AI YouTube Video Analyzer</h1>
+    <p>Paste your YouTube link and get an AI-generated performance report.</p>
+
+    <input id="ytLink" type="text" placeholder="Paste YouTube video link here..." />
+    <input id="email" type="email" placeholder="Enter your email to receive the report" />
+    <button onclick="submitForm()">Analyze Video</button>
+
+    <div class="message" id="message"></div>
+  </div>
+
+  <script>
+    async function submitForm() {
+      const link = document.getElementById('ytLink').value;
+      const email = document.getElementById('email').value;
+      const message = document.getElementById('message');
+
+      if (!link || !email) {
+        message.textContent = "Please enter both YouTube link and your email.";
+        return;
+      }
+
+      message.textContent = "Analyzing video... Please wait.";
+
+      try {
+        const response = await fetch("https://exp1-hsr4.onrender.com/", {  // ← REPLACE HERE
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ youtube_url: link, email: email })
+        });
+
+        const data = await response.json();
+        if(data.status === "success") {
+          message.textContent = "✅ Report Generated:\n\n" + data.report;
+        } else {
+          message.textContent = "❌ Error generating report. Try again.";
+        }
+      } catch (err) {
+        message.textContent = "❌ Error: " + err.message;
+      }
+    }
+  </script>
+</body>
+</html>
